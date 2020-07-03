@@ -1,0 +1,32 @@
+on early-init
+    mount debugfs debugfs /sys/kernel/debug
+
+service dramaging /sbin/dramaging
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
+service flashaging /sbin/flashaging
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
+service sbltest /sbin/sbltestreport
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
+on property:vendor.oppo.engineermode.chargeswitch=true
+    write /sys/class/power_supply/battery/mmi_charging_enable 1
+
+on property:vendor.oppo.engineermode.chargeswitch=false
+    write /sys/class/power_supply/battery/mmi_charging_enable 0
+
+on property:sys.oppo_ftm_mode=998
+    start servicemanager
+
+on property:sys.oppo_ftm_mode=998 && property:init.svc.servicemanager=running
+    wait /cache/factory/agingtest_ui.log
+    start dramaging
+    start flashaging
+    start sbltest
