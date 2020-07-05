@@ -3,13 +3,27 @@
 # specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
 
 # Mount point		FS		Device									Flags
-/boot				emmc	/dev/block/platform/bootdevice/by-name/boot
-/recovery				emmc	/dev/block/platform/bootdevice/by-name/recovery
-/cache			ext4	/dev/block/mmcblk0p41
-/vendor			ext4	/dev/block/platform/bootdevice/by-name/vendor		flags=display=Vendor;backup=1;wipeingui
-/vendor_image		emmc	/dev/block/platform/bootdevice/by-name/vendor		flags=backup=1;flashimg=1
-/data				ext4	/dev/block/platform/bootdevice/by-name/userdata		flags=encryptable=footer;length=-16384
-/dtbo				emmc	/dev/block/platform/bootdevice/by-name/dtbo
+/boot           emmc      /dev/block/platform/bootdevice/by-name/boot               flags=display="Boot"
+/recovery       emmc      /dev/block/platform/bootdevice/by-name/recovery           flags=display="Recovery";backup=1
+/system         ext4      /dev/block/platform/bootdevice/by-name/system             flags=display="System";backup=1
+/system_image   emmc      /dev/block/platform/bootdevice/by-name/system             flags=backup=1;flashimg
+/vendor         ext4      /dev/block/platform/bootdevice/by-name/vendor             flags=display="Vendor";backup=1;wipeingui;fsflags=rw
+/vendor_image   emmc      /dev/block/platform/bootdevice/by-name/vendor             flags=display=Vendor;backup=1;wipeingui
+/data           ext4      /dev/block/platform/bootdevice/by-name/userdata           flags=encryptable=footer;length=-16384
+/dtbo           emmc      /dev/block/platform/bootdevice/by-name/dtbo
+/cache          ext4      /dev/block/platform/bootdevice/by-name/cache              flags=display="Cache";backup=1;wipeingui
+/splash         emmc      /dev/block/platform/bootdevice/by-name/splash             flags=display="Boot Logo";backup=1;flashimg=1
+
+# Modem and communication efs data
+/efs1           emmc      /dev/block/platform/bootdevice/by-name/modemst1           flags=backup=1;display="EFS"
+/efs2           emmc      /dev/block/platform/bootdevice/by-name/modemst2           flags=backup=1;subpartitionof=/efs1
+/fsg            emmc      /dev/block/platform/bootdevice/by-name/fsg                flags=backup=1;subpartitionof=/efs1
+/fsc            emmc      /dev/block/platform/bootdevice/by-name/fsc                flags=backup=1;subpartitionof=/efs1
+/persist        ext4      /dev/block/platform/bootdevice/by-name/persist            flags=display="Persist";backup=1;flashimg
+/persist_image  emmc      /dev/block/platform/bootdevice/by-name/persist            flags=display="Persist Image";backup=1
+
+# /firmware currently appears to not be necessary for decryption
+/firmware       vfat      /dev/block/platform/bootdevice/by-name/modem              flags=display="Firmware";mounttodecrypt;fsflags=ro
 
 # External storage
 /sdcard1			vfat	/dev/block/mmcblk1p1 /dev/block/mmcblk1	flags=fsflags=utf8;display=SDcard;storage;wipeingui;removable
