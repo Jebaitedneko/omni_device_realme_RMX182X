@@ -1,26 +1,46 @@
-# Android fstab file.
-# The filesystem that contains the filesystem checker binary (typically /system) cannot
-# specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
-
-# Mount point		FS		Device									Flags
-/boot           emmc      /dev/block/platform/bootdevice/by-name/boot               flags=display="Boot"
-/recovery       emmc      /dev/block/platform/bootdevice/by-name/recovery           flags=display="Recovery";backup=1
-/system         ext4      /dev/block/platform/bootdevice/by-name/system             flags=display="System";backup=1
-/system_image   emmc      /dev/block/platform/bootdevice/by-name/system             flags=backup=1;flashimg
-/vendor         ext4      /dev/block/platform/bootdevice/by-name/vendor             flags=display="Vendor";backup=1;wipeingui;fsflags=rw
-/vendor_image   emmc      /dev/block/platform/bootdevice/by-name/vendor             flags=display=Vendor;backup=1;wipeingui
-/data           ext4      /dev/block/platform/bootdevice/by-name/userdata           flags=encryptable=footer;length=-16384
-/dtbo           emmc      /dev/block/platform/bootdevice/by-name/dtbo
-/cache          ext4      /dev/block/platform/bootdevice/by-name/cache              flags=display="Cache";backup=1;wipeingui
-/splash         emmc      /dev/block/platform/bootdevice/by-name/splash             flags=display="Boot Logo";backup=1;flashimg=1
-
-# Modem and communication efs data
-/efs1           emmc      /dev/block/platform/bootdevice/by-name/modemst1           flags=backup=1;display="EFS"
-/efs2           emmc      /dev/block/platform/bootdevice/by-name/modemst2           flags=backup=1;subpartitionof=/efs1
-/fsg            emmc      /dev/block/platform/bootdevice/by-name/fsg                flags=backup=1;subpartitionof=/efs1
-/fsc            emmc      /dev/block/platform/bootdevice/by-name/fsc                flags=backup=1;subpartitionof=/efs1
-/persist        ext4      /dev/block/platform/bootdevice/by-name/persist            flags=display="Persist";backup=1;flashimg
-/persist_image  emmc      /dev/block/platform/bootdevice/by-name/persist            flags=display="Persist Image";backup=1
-
-# External storage
-/sdcard1			vfat	/dev/block/mmcblk1p1 /dev/block/mmcblk1	flags=fsflags=utf8;display=SDcard;storage;wipeingui;removable
+/audio_dsp	emmc		/dev/block/by-name/audio_dsp				flags=display="/audio_dsp";backup=1
+/boot		emmc		/dev/block/platform/bootdevice/by-name/boot		flags=display="/boot";backup=1
+/boot_para	emmc		/dev/block/platform/bootdevice/by-name/boot_para	flags=display="/boot_para";backup=1
+/bootloader	emmc		/dev/block/platform/bootdevice/by-name/lk		flags=display="/bootloader";backup=1
+/bootloader2	emmc		/dev/block/platform/bootdevice/by-name/lk2		flags=display="/bootloader2";backup=1
+/cache		ext4		/dev/block/mmcblk0p41					flags=display="/cache";wait;formattable;first_stage_mount;discard;backup=1
+/cam_vpu1	emmc		/dev/block/platform/bootdevice/by-name/cam_vpu1	flags=display="/cam_vpu1";backup=1
+/cam_vpu2	emmc		/dev/block/platform/bootdevice/by-name/cam_vpu2	flags=display="/cam_vpu2";backup=1
+/cam_vpu3	emmc		/dev/block/platform/bootdevice/by-name/cam_vpu3	flags=display="/cam_vpu3";backup=1
+/data		ext4		/dev/block/platform/bootdevice/by-name/userdata	flags=display="/data";wait;formattable;quota;resize;fileencryption=aes-256-xts;backup=1
+/dtbo		emmc		/dev/block/platform/bootdevice/by-name/dtbo		flags=display="/dtbo";backup=1
+/expdb		emmc		/dev/block/platform/bootdevice/by-name/expdb		flags=display="/expdb";backup=1
+/external_sd	vfat		/dev/block/mmcblk1p1					flags=display="/external_sd";wait;backup=1
+/gz1		emmc		/dev/block/platform/bootdevice/by-name/gz1		flags=display="/gz1";backup=1
+/gz2		emmc		/dev/block/platform/bootdevice/by-name/gz2		flags=display="/gz2";backup=1
+/logo		emmc		/dev/block/platform/bootdevice/by-name/logo		flags=display="/logo";backup=1
+/md1arm7	emmc		/dev/block/platform/bootdevice/by-name/md1arm7	flags=display="/md1arm7";backup=1
+/md1dsp	emmc		/dev/block/platform/bootdevice/by-name/md1dsp		flags=display="/md1dsp";backup=1
+/md1img	emmc		/dev/block/platform/bootdevice/by-name/md1img		flags=display="/md1img";backup=1
+/md3img	emmc		/dev/block/platform/bootdevice/by-name/md3img		flags=display="/md3img";backup=1
+/misc		emmc		/dev/block/platform/bootdevice/by-name/para		flags=display="/misc";backup=1
+/nvcfg		ext4		/dev/block/platform/bootdevice/by-name/nvcfg		flags=display="/mnt/vendor/nvcfg";wait;formattable;commit=1;backup=1
+/nvdata	ext4		/dev/block/platform/bootdevice/by-name/nvdata		flags=display="/mnt/vendor/nvdata";wait;formattable;discard;backup=1
+/protect_f	ext4		/dev/block/platform/bootdevice/by-name/protect1	flags=display="/mnt/vendor/protect_f";wait;formattable;commit=1;backup=1
+/protect_s	ext4		/dev/block/platform/bootdevice/by-name/protect2	flags=display="/mnt/vendor/protect_s";wait;formattable;commit=1;backup=1
+/nvram		emmc		/dev/block/platform/bootdevice/by-name/nvram		flags=display="/nvram";backup=1
+/odmdtbo	emmc		/dev/block/platform/bootdevice/by-name/odmdtbo	flags=display="/odmdtbo";backup=1
+/opporeserve	ext4		/dev/block/by-name/opporeserve2			flags=display="/opporeserve";wait;rw;seclabel;noatime;data=ordered;backup=1
+/otp		emmc		/dev/block/platform/bootdevice/by-name/otp		flags=display="/otp";backup=1
+/persistent	emmc		/dev/block/platform/bootdevice/by-name/frp		flags=display="/persistent";backup=1
+/proinfo	emmc		/dev/block/platform/bootdevice/by-name/proinfo	flags=display="/proinfo";backup=1
+/recovery	emmc		/dev/block/platform/bootdevice/by-name/recovery	flags=display="/recovery";backup=1
+/reserve2	emmc		/dev/block/platform/bootdevice/by-name/reserve2	flags=display="/reserve2";backup=1
+/scp1		emmc		/dev/block/platform/bootdevice/by-name/scp1		flags=display="/scp1";backup=1
+/scp2		emmc		/dev/block/platform/bootdevice/by-name/scp2		flags=display="/scp2";backup=1
+/seccfg	emmc		/dev/block/platform/bootdevice/by-name/seccfg		flags=display="/seccfg";backup=1
+/spmfw		emmc		/dev/block/platform/bootdevice/by-name/spmfw		flags=display="/spmfw";backup=1
+/sspm_1	emmc		/dev/block/platform/bootdevice/by-name/sspm_1		flags=display="/sspm_1";backup=1
+/sspm_2	emmc		/dev/block/platform/bootdevice/by-name/sspm_2		flags=display="/sspm_2";backup=1
+/system	ext4		/dev/block/platform/bootdevice/by-name/system		flags=display="/system";wait;verify;recoveryonly;rw;backup=1
+/tee1		emmc		/dev/block/platform/bootdevice/by-name/tee1		flags=display="/tee1";backup=1
+/tee2		emmc		/dev/block/platform/bootdevice/by-name/tee2		flags=display="/tee2";backup=1
+/vbmeta	emmc		/dev/block/platform/bootdevice/by-name/vbmeta		flags=display="/vbmeta";backup=1
+/vendor	ext4		/dev/block/platform/bootdevice/by-name/vendor		flags=display="/vendor";wait;verify;recoveryonly;rw;backup=1
+auto		auto		/devices/platform/externdevice*			flags=display="auto";voldmanaged=sdcard1:auto;encryptable=userdata;backup=1
+auto		vfat		/devices/platform/11200000.usb3_xhci*			flags=display="auto";voldmanaged=usbotg:auto;backup=1
