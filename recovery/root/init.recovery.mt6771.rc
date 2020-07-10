@@ -37,11 +37,9 @@ service keymaster-3-0 /sbin/android.hardware.keymaster@3.0-service.trustonic
 
 service hwservicemanager /sbin/hwservicemanager
     onrestart setprop hwservicemanager.ready false
-    writepid /dev/cpuset/system-background/tasks
     seclabel u:r:recovery:s0
 
 service servicemanager /sbin/servicemanager
-    writepid /dev/cpuset/system-background/tasks
     seclabel u:r:recovery:s0
 
 service mobicore /vendor/bin/mcDriverDaemon --P1 /mnt/vendor/persist/mcRegistry \
