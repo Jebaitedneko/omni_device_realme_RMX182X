@@ -22,8 +22,5 @@
 /persist        ext4      /dev/block/platform/bootdevice/by-name/persist            flags=display="Persist";backup=1;flashimg
 /persist_image  emmc      /dev/block/platform/bootdevice/by-name/persist            flags=display="Persist Image";backup=1
 
-# /firmware currently appears to not be necessary for decryption
-/firmware       vfat      /dev/block/platform/bootdevice/by-name/modem              flags=display="Firmware";mounttodecrypt;fsflags=ro
-
 # External storage
 /sdcard1			vfat	/dev/block/mmcblk1p1 /dev/block/mmcblk1	flags=fsflags=utf8;display=SDcard;storage;wipeingui;removable
