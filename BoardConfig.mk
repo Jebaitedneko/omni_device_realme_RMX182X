@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-DEVICE_PATH := device/realme/RMX182X
+DEVICE_PATH := device/realme/RMX1821
 
 # For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true
@@ -59,12 +59,18 @@ TARGET_KERNEL_SOURCE := kernel/realme/RMX182X
 TARGET_KERNEL_CONFIG := RMX182X_defconfig
 
 # Platform
-# Fix this
-#TARGET_BOARD_PLATFORM := 
-#TARGET_BOARD_PLATFORM_GPU := 
+TARGET_BOARD_PLATFORM := mt6771
+TARGET_IS_64_BIT := true
+BOARD_HAS_MTK_HARDWARE := true
+BOARD_USES_MTK_HARDWARE := true
+MTK_HARDWARE := true
+TARGET_BOOTLOADER_BOARD_NAME := mt6771
+TARGET_BOARD_PLATFORM_GPU := Mali-G72 MP3
 
 # Assert
-TARGET_OTA_ASSERT_DEVICE := RMX182X
+TARGET_OTA_ASSERT_DEVICE := RMX1821,RMX1825
+
+TW_OZIP_DECRYPT_KEY := "2132321EA2CA86621A11241ABA512722"
 
 # Partitions
 #BOARD_RECOVERYIMAGE_PARTITION_SIZE := 67108864 # This is the maximum known partition size, but it can be higher, so we just omit it
