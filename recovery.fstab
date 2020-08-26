@@ -3,7 +3,6 @@
 /data		ext4		/dev/block/platform/bootdevice/by-name/userdata	flags=display="data";formattable;resize;fileencryption=aes-256-xts;backup=1;length=-16384
 /cache		ext4		/dev/block/mmcblk0p41					flags=display="cache";formattable;backup=1
 /system	ext4		/dev/block/platform/bootdevice/by-name/system		flags=display="system";backup=1
-/system_root	ext4		/dev/block/platform/bootdevice/by-name/system		flags=display="system_image";backup=1
 /system_image	emmc		/dev/block/platform/bootdevice/by-name/system		flags=display="system_image";backup=1
 /vendor	ext4		/dev/block/platform/bootdevice/by-name/vendor		flags=display="vendor";backup=1
 /vendor_image	emmc		/dev/block/platform/bootdevice/by-name/vendor		flags=display="vendor_image"backup=1

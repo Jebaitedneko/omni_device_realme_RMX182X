@@ -33,9 +33,9 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 
 # Device identifier. This must come after all inclusions
-PRODUCT_DEVICE := RMX182X
-PRODUCT_NAME := omni_RMX182X
+PRODUCT_DEVICE := RMX1821
+PRODUCT_NAME := omni_RMX1821
 PRODUCT_BRAND := realme
-PRODUCT_MODEL := Realme 3(i)
+PRODUCT_MODEL := Realme 3
 PRODUCT_MANUFACTURER := realme
-PRODUCT_RELEASE_NAME := Realme 3(i)
+PRODUCT_RELEASE_NAME := Realme 3
