@@ -61,5 +61,6 @@ if [ -n "$FOX_BUILD_LOG_FILE" -a -f "$FOX_BUILD_LOG_FILE" ]; then
 	export | grep "TW_" >> $FOX_BUILD_LOG_FILE
 fi
 
-add_lunch_combo omni_RMX1821-userdebug
-add_lunch_combo omni_RMX1821-eng
+for var in eng user userdebug; do
+  add_lunch_combo omni_RMX1821-$var
+done
