@@ -7,6 +7,8 @@ dir.recovery = /system/bin
 
 [recovery]
 namespace.default.search.paths = /system/${LIB}
+namespace.default.search.paths = /vendor/${LIB}/hw
+namespace.default.search.paths = /sbin
 
 # Don't change the order here. The first pattern that matches with the
 # absolute path of an executable is selected.
