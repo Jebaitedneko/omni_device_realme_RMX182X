@@ -27,46 +27,6 @@ on post-fs
     symlink /dev/block/platform/bootdevice/by-name/preloader_a /dev/block/platform/bootdevice/by-name/preloader_ufs_a
     symlink /dev/block/platform/bootdevice/by-name/preloader_b /dev/block/platform/bootdevice/by-name/preloader_ufs_b
 
-#crypto
-
-service hal_cryptoeng_oppo /sbin/vendor.oppo.hardware.cryptoeng@1.0-service
-    seclabel u:r:recovery:s0
-
-service keymaster-3-0 /sbin/android.hardware.keymaster@3.0-service.trustonic
-    seclabel u:r:recovery:s0
-
-service hwservicemanager /sbin/hwservicemanager
-    onrestart setprop hwservicemanager.ready false
-    seclabel u:r:recovery:s0
-
-service servicemanager /sbin/servicemanager
-    seclabel u:r:recovery:s0
-
-service mobicore /vendor/bin/mcDriverDaemon --P1 /mnt/vendor/persist/mcRegistry \
-    -r /vendor/app/mcRegistry/06090000000000000000000000000000.drbin \
-    -r /vendor/app/mcRegistry/020f0000000000000000000000000000.drbin \
-    -r /vendor/app/mcRegistry/05120000000000000000000000000000.drbin \
-    -r /vendor/app/mcRegistry/020b0000000000000000000000000000.drbin \
-    -r /vendor/app/mcRegistry/05070000000000000000000000000000.drbin \
-    -r /vendor/app/mcRegistry/030b0000000000000000000000000000.drbin \
-    -r /vendor/app/mcRegistry/03100000000000000000000000000000.drbin \
-    -r /vendor/app/mcRegistry/030c0000000000000000000000000000.drbin \
-    -r /vendor/app/mcRegistry/40188311faf343488db888ad39496f9a.drbin \
-    -r /vendor/app/mcRegistry/070c0000000000000000000000000000.drbin \
-    -r /vendor/app/mcRegistry/090b0000000000000000000000000000.drbin \
-    -r /vendor/app/mcRegistry/0f5eed3c3b5a47afacca69a84bf0efad.drbin \
-    -r /vendor/app/mcRegistry/07060000000000000000000000007169.drbin \
-    -r /vendor/app/mcRegistry/07407000000000000000000000000000.drbin \
-    -r /vendor/app/mcRegistry/9073f03a9618383bb1856eb3f990babd.drbin
-    seclabel u:r:recovery:s0
-    
-on property:ro.crypto.state=encrypted
-    start hal_cryptoeng_oppo
-    start mobicore
-    start servicemanager
-    start hwservicemanager
-    start keymaster-3-0
-
 # from init.aging.rc
 
 on early-init
@@ -101,3 +61,104 @@ on property:sys.oppo_ftm_mode=998 && property:init.svc.servicemanager=running
     start dramaging
     start flashaging
     start sbltest
+
+on init
+    export PATH /sbin:/system/bin
+    export ANDROID_ROOT /system
+    export ANDROID_DATA /data
+    export EXTERNAL_STORAGE /sdcard
+    export LD_LIBRARY_PATH .:/sbin
+
+    symlink /proc/self/fd/0 /dev/stdin
+    symlink /proc/self/fd/1 /dev/stdout
+    symlink /proc/self/fd/2 /dev/stderr
+    symlink /system/etc /etc
+
+    mount cgroup none /acct cpuacct
+    mkdir /acct/uid
+    mkdir /sdcard
+    mkdir /external_sd
+    mkdir /usb_otg
+    mkdir /system
+    mkdir /data
+    mkdir /cache
+    mkdir /sideload
+    mkdir /mnt/system
+    mount tmpfs tmpfs /tmp size=80%
+
+    chown root shell /tmp
+    chmod 0775 /tmp
+
+ #   exec /sbin/e2fsck -y /dev/block/platform/mtk-msdc.0/by-name/cache
+ #   exec /sbin/e2fsck -y /dev/block/platform/mtk-msdc.0/by-name/userdata
+
+    mkdir /mnt/vendor/persist/mcRegistry
+
+on fs
+    mkdir /dev/usb-ffs 0775 shell shell
+    mkdir /dev/usb-ffs/adb 0770 shell shell
+    mount functionfs adb /dev/usb-ffs/adb uid=2000,gid=2000
+    mkdir /dev/usb-ffs/fastboot 0770 system system
+    mount functionfs fastboot /dev/usb-ffs/fastboot rmode=0770,fmode=0660,uid=1000,gid=1000
+
+#Add for OPPO FBE
+service hal_cryptoeng_oppo /sbin/vendor.oppo.hardware.cryptoeng@1.0-service
+    seclabel u:r:recovery:s0
+
+service keymaster-3-0 /sbin/android.hardware.keymaster@3.0-service.trustonic
+    seclabel u:r:recovery:s0
+
+service hwservicemanager /sbin/hwservicemanager
+    onrestart setprop hwservicemanager.ready false
+    writepid /dev/cpuset/system-background/tasks
+    seclabel u:r:recovery:s0
+
+service wmt_loader /vendor/bin/wmt_loader
+    class main
+    user system
+    group system
+    oneshot
+    seclabel u:r:recovery:s0
+
+service wmt_launcher  /vendor/bin/wmt_launcher -p /vendor/firmware/
+    class main
+    user system
+    group system
+    oneshot
+    seclabel u:r:recovery:s0
+
+service vndservicemanager /vendor/bin/vndservicemanager /dev/vndbinder
+    writepid /dev/cpuset/system-background/tasks
+    seclabel u:r:recovery:s0
+
+service servicemanager /sbin/servicemanager
+    writepid /dev/cpuset/system-background/tasks
+    seclabel u:r:recovery:s0
+
+service mobicore /vendor/bin/mcDriverDaemon --P1 /mnt/vendor/persist/mcRegistry \
+    -r /vendor/app/mcRegistry/06090000000000000000000000000000.drbin \
+    -r /vendor/app/mcRegistry/020f0000000000000000000000000000.drbin \
+    -r /vendor/app/mcRegistry/05120000000000000000000000000000.drbin \
+    -r /vendor/app/mcRegistry/020b0000000000000000000000000000.drbin \
+    -r /vendor/app/mcRegistry/05070000000000000000000000000000.drbin \
+    -r /vendor/app/mcRegistry/030b0000000000000000000000000000.drbin \
+    -r /vendor/app/mcRegistry/03100000000000000000000000000000.drbin \
+    -r /vendor/app/mcRegistry/030c0000000000000000000000000000.drbin \
+    -r /vendor/app/mcRegistry/40188311faf343488db888ad39496f9a.drbin \
+    -r /vendor/app/mcRegistry/070c0000000000000000000000000000.drbin \
+    -r /vendor/app/mcRegistry/090b0000000000000000000000000000.drbin \
+    -r /vendor/app/mcRegistry/0f5eed3c3b5a47afacca69a84bf0efad.drbin \
+    -r /vendor/app/mcRegistry/07060000000000000000000000007169.drbin \
+    -r /vendor/app/mcRegistry/07407000000000000000000000000000.drbin \
+    -r /vendor/app/mcRegistry/9073f03a9618383bb1856eb3f990babd.drbin
+    seclabel u:r:recovery:s0
+
+on property:ro.crypto.state=encrypted
+    start keymaster-3-0
+    start hal_cryptoeng_oppo
+    start wmt_loader
+    start wmt_launcher
+    start mobicore
+    start servicemanager
+    start vndservicemanager
+    start hwservicemanager
