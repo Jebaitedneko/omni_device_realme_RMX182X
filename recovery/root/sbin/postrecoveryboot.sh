@@ -18,5 +18,24 @@
 # 	
 # 	Please maintain this if you use this script or any part of it
 
-echo "0" > /sys/class/leds/mt6370_pmu_bled/max_brightness
+# echo "0" > /sys/class/leds/mt6370_pmu_bled/max_brightness
 # echo "0" > /sys/class/leds/vibrator/max_brightness
+
+rm_mount() {
+  while [ 1 ]
+  do
+    [ -e /dev/tmp/bin/mount ] && {
+      rm -f /dev/tmp/bin/mount
+      sleep 2
+      return 0
+    }
+    usleep 10
+  done
+}
+
+
+while [ 1 ]
+do
+  [ -e /dev/tmp ] && rm_mount
+  usleep 100
+done
